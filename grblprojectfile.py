@@ -1,9 +1,6 @@
-import serial
 import time
 
 from grblproject import *
-
-s = serial.Serial("COM5", 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE)
 
 currentX = 0
 currentY = 0
@@ -13,8 +10,8 @@ currentZ = 0
 # Change the when you've installed the tray in the machine
 
 time.sleep(2)
-s.reset_input_buffer()
-s.write("G21")
+reset_buffers()
+set_to_metric()
 
 # Write your program here:
 go_to_adds(1)
@@ -24,6 +21,6 @@ go_to_next_vial()
 time.sleep(5)
 go_to_origin()
 time.sleep(5)
-s.reset_input_buffer()
+reset_buffers()
 
-s.close()
+serial_close()
