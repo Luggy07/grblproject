@@ -2,6 +2,8 @@ import time
 
 from grblproject import *
 
+s = serial.Serial("/dev/ttyUSB0", 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE)
+
 currentX = 0
 currentY = 0
 currentZ = 0
@@ -14,13 +16,10 @@ reset_buffers()
 set_to_metric()
 
 # Write your program here:
-go_to_adds(1)
-time.sleep(2)
+go_to_adds(23)
 go_to_next_vial()
 
-time.sleep(5)
 go_to_origin()
-time.sleep(5)
 reset_buffers()
 
 serial_close()
