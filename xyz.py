@@ -12,6 +12,9 @@ jData = json.loads(j.read())
 # Set Windows and Linux serial directories.
 XYZ_WINDOWS = "COM"
 XYZ_LINUX = "/dev/ttyUSB"
+# Set maximum and minimum nozzle height.
+XYZ_MAX_HEIGHT = 0
+XYZ_MIN_HEIGHT = -45
 # Zero machine position.
 currentX = 0
 currentY = 0
@@ -28,7 +31,7 @@ vial00X = jData["values"][7]["vial00X"]
 vial00Y = jData["values"][8]["vial00Y"]
 
 # Set OS and port.
-def set_port(os: str, port: int):
+def open_port(os, port):
   if (os == XYZ_WINDOWS):
     s = serial.Serial(XYZ_WINDOWS + str(port), 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE)
   elif (os == XYZ_LINUX):
@@ -94,11 +97,11 @@ def go_to_adds(adds):
       x = vial00X
       y = vial00Y
     elif (adds > 0 and adds < rows):
-      x = vial00X + (vialXOffset * (adds % rows))
+      x = vial00X + (vialXOffset * adds)
       y = vial00Y
     else:
       x = vial00X + (vialXOffset * (adds % rows))
-      y = -1 * abs(vial00Y + (vialYOffset * (adds / rows) - ((adds % rows) / adds)))
+      y = -1 * abs(vial00Y + (vialYOffset * (2 + (adds / rows) - ((adds % rows) / adds))))
     z = 0
     currentX = x
     currentY = y
@@ -109,6 +112,27 @@ def go_to_adds(adds):
     s.write("G0 X".encode("UTF-8") + str(currentX).encode("ascii") + " Y".encode("UTF-8") + str(currentY).encode("ascii") + " Z".encode("UTF-8") + str(currentZ).encode("ascii") + "\n".encode("UTF-8"))
     print("Going to vial address " + str(adds))
     wait_until_done(gtaX1, gtaX2, gtaY1, gtaY2, gtaZ1, gtaZ2)
+
+# This function moves the nozzle to the height given to the function.
+def go_to_height(height):
+  global currentX
+  global currentY
+  global currentZ
+  gthX1 = currentX
+  gthY1 = currentY
+  gthX2 = gthX1
+  gthY2 = gthY1
+  gthZ1 = currentZ
+  if (height < -45):
+    print("Error: Minimum nozzle height is -45, try something bigger.")
+  elif (height > 0):
+    print("Error: Maximum nozzle height is 0, try something smaller.")
+  else:
+    currentZ = height
+    s.write("G0 Z".encode("UTF-8") + str(currentZ).encode("ascii") + "\n".encode("UTF-8"))
+    print("Going to height: " + str(height))
+  gthZ2 = currentZ
+  wait_until_done(gthX1, gthX2, gthY1, gthY2, gthZ1, gthZ2)
 
 # Moves nozzle to the next vial address. If the current vial address is the last one the nozzle will move to address 0.
 def go_to_next_vial():
@@ -146,3 +170,4 @@ def go_to_origin():
   s.write("G0 X0 Y0 Z0\n".encode("UTF-8"))
   print("Going to origin")
   wait_until_done(gtoX1, gtoX2, gtoY1, gtoY2, gtoZ1, gtoZ2)
+
