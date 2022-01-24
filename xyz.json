@@ -1,0 +1,32 @@
+{
+  "values":
+  [
+    {
+      "rows": 6
+    },
+    {
+      "columns": 4
+    },
+    {
+      "vialXOffset": 19.9
+    },
+    {
+      "vialYOffset": 19.3
+    },
+    {
+      "wasteX": 10
+    },
+    {
+      "wasteY": 10
+    },
+    {
+      "wasteZ": -10
+    },
+    {
+      "vial00X": 5
+    },
+    {
+      "vial00Y": 0
+    }
+  ]
+}
