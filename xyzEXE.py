@@ -23,22 +23,6 @@ reset_buffers()
 set_to_metric()
 
 # Write your program here:
-#go_to_adds(0)
-#go_to_height(XYZ_MIN_HEIGHT)
-#time.sleep(5)
-#go_to_adds(5)
-#go_to_height(XYZ_MIN_HEIGHT)
-#time.sleep(5)
-#go_to_adds(9)
-#go_to_height(XYZ_MIN_HEIGHT)
-#time.sleep(5)
-#go_to_adds(18)
-#go_to_height(XYZ_MIN_HEIGHT)
-#time.sleep(5)
-#go_to_adds(23)
-#go_to_height(XYZ_MIN_HEIGHT)
-#time.sleep(5)
-shake()
 
 # Go back to origin, reset input and output buffers and close the serial port .json file.
 go_to_origin()
